@@ -5,6 +5,8 @@
   <h1 align="center">Isar Database</h1>
 </p>
 
+Rebuild the native libraries with the new configuration:
+
 <p align="center">
   <a href="https://pub.dev/packages/isar">
     <img src="https://img.shields.io/pub/v/isar?label=pub.dev&labelColor=333940&logo=dart">
@@ -30,6 +32,18 @@
   <a href="https://github.com/isar/isar/discussions">Support & Ideas</a> •
   <a href="https://pub.dev/packages/isar">Pub.dev</a>
 </p>
+
+```bash
+cd /path/to/isar
+
+# Build for ARM64 (most common)
+./tool/build_android.sh arm64
+
+# Build for ARMv7
+./tool/build_android.sh armv7
+
+# Build for x86_64 (emulator)
+./tool/build_android.sh x64
 
 > #### Isar [ee-zahr]:
 >
