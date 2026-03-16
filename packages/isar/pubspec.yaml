@@ -19,7 +19,7 @@ environment:
 
 dependencies:
   analyzer: ">=5.2.0 <7.0.0"
-  build: ^3.0.0
+  build: ^2.0.0
   ffi: ">=2.0.0 <3.0.0"
   js: ^0.6.7
   meta: ^1.9.1
@@ -30,4 +30,4 @@ dev_dependencies:
   ffigen: ^8.0.2
   test: any
   very_good_analysis: ^5.0.0+1
-  flutter_gen_runner: ^6.0.0
+  flutter_gen_runner: 5.9.0
