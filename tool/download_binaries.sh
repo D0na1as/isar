@@ -5,7 +5,7 @@ if [ -z "$ISAR_VERSION" ]; then
     exit 2;
 fi
 
-github="https://github.com/D0na1as/isar/tree/main-with-16kb/download"
+github="https://github.com/isar/isar/releases/download/4.0.0-dev.14/$ISAR_VERSION"
 
 
 curl "${github}/libisar_android_arm64.so" -o packages/isar_flutter_libs/android/src/main/jniLibs/arm64-v8a/libisar.so --create-dirs -L -f
