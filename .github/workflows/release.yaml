@@ -1,63 +1,63 @@
 name: Isar release
 
- on:
-   push:
-     tags:
-       - "*"
-   workflow_dispatch:
-     inputs:
-       version:
-         description: "Tag/version to label the build with"
-         required: true
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tag/version to label the build with"
+        required: true
 
- jobs:
-   build_binaries:
-     name: Build Binaries
-     strategy:
-       fail-fast: false
-       matrix:
-         include:
-           - os: ubuntu-latest
-             artifact_name: libisar_android_arm64.so
-             script: build_android.sh
-           - os: ubuntu-latest
-             artifact_name: libisar_android_armv7.so
-             script: build_android.sh armv7
-           - os: ubuntu-latest
-             artifact_name: libisar_android_x64.so
-             script: build_android.sh x64
-           - os: macos-latest
-             artifact_name: isar_ios.xcframework.zip
-             script: build_ios.sh
-           - os: ubuntu-22.04
-             artifact_name: libisar_linux_x64.so
-             script: build_linux.sh x64
-           - os: macos-latest
-             artifact_name: libisar_macos.dylib
-             script: build_macos.sh
-           - os: windows-latest
-             artifact_name: isar_windows_x64.dll
-             script: build_windows.sh x64
-     runs-on: ${{ matrix.os }}
-     steps:
-       - uses: actions/checkout@v4
-       - name: Prepare Build
-         uses: ./.github/actions/prepare-build
-       - name: Set Isar Version
-         run: echo "ISAR_VERSION=${{ inputs.version || github.ref_name }}" >> $GITHUB_ENV
-       - name: Build binary
-         run: bash tool/${{ matrix.script }}
-       - name: Upload to release (tag pushes only)
-         if: startsWith(github.ref, 'refs/tags/')
-         uses: svenstaro/upload-release-action@v2
-         with:
-           repo_token: ${{ secrets.GITHUB_TOKEN }}
-           file: ${{ matrix.artifact_name }}
-           asset_name: ${{ matrix.artifact_name }}
-           tag: ${{ github.ref }}
-       - name: Upload as workflow artifact (manual runs)
-         if: github.event_name == 'workflow_dispatch'
-         uses: actions/upload-artifact@v4
-         with:
-           name: ${{ matrix.artifact_name }}
-           path: ${{ matrix.artifact_name }}
+jobs:
+  build_binaries:
+    name: Build Binaries
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: libisar_android_arm64.so
+            script: build_android.sh
+          - os: ubuntu-latest
+            artifact_name: libisar_android_armv7.so
+            script: build_android.sh armv7
+          - os: ubuntu-latest
+            artifact_name: libisar_android_x64.so
+            script: build_android.sh x64
+          - os: macos-latest
+            artifact_name: isar_ios.xcframework.zip
+            script: build_ios.sh
+          - os: ubuntu-22.04
+            artifact_name: libisar_linux_x64.so
+            script: build_linux.sh x64
+          - os: macos-latest
+            artifact_name: libisar_macos.dylib
+            script: build_macos.sh
+          - os: windows-latest
+            artifact_name: isar_windows_x64.dll
+            script: build_windows.sh x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Build
+        uses: ./.github/actions/prepare-build
+      - name: Set Isar Version
+        run: echo "ISAR_VERSION=${{ inputs.version || github.ref_name }}" >> $GITHUB_ENV
+      - name: Build binary
+        run: bash tool/${{ matrix.script }}
+      - name: Upload to release (tag pushes only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.artifact_name }}
+          tag: ${{ github.ref }}
+      - name: Upload as workflow artifact (manual runs)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}
